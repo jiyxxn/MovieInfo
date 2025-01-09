@@ -22,7 +22,6 @@ const fetchMovies = async function () {
   try {
     const res = await fetch(movieListUrl, options);
     const { results } = await res.json();
-    console.log(results);
     return results;
   } catch (err) {
     console.error("Error fetching movies:", err);
@@ -62,7 +61,9 @@ const displayMovieDetails = function (movie) {
       <p class="description">${movie.overview || "준비중"}</p>
       <span class="releaseDate">개봉 일자 : ${movie.release_date}</span>
       <span class="rating">평점 : ${movie.vote_average}</span>
-      <button type="button" class="btnAddBookmark">북마크에 추가하기</button>
+      <button type="button" class="btnAddBookmark" data-id="${
+        movie.id
+      }">북마크에 추가하기</button>
     </div>
     <button type="button" class="btnClose"><i class="fa-solid fa-xmark"></i></button>
   `;
@@ -82,6 +83,7 @@ movieCardArea.addEventListener("click", function (e) {
       movieModal.classList.add("active");
     }
   }
+  addBookmarksToSession();
 });
 
 // * -------- 모달 닫기 -------- //
@@ -95,13 +97,14 @@ movieModal.addEventListener("click", function (e) {
   }
 });
 
+// * -------- 영화 검색 --------
 const searchMovies = function () {
   const searchInput = document.getElementById("searchText");
 
   // 디바운싱
   let debounceTimeout;
   searchInput.addEventListener("input", function () {
-    clearTimeout(debounceTimeout); // 이전 타이머 취소
+    clearTimeout(debounceTimeout);
 
     let searchKeyword = this.value.trim();
 
@@ -122,5 +125,69 @@ const searchMovies = function () {
 
 fetchMovies().then((movies) => {
   displayMovies(movies);
-  searchMovies(movies);
+  searchMovies();
+  addBookmarksToSession();
+});
+
+let bookmarksData = new Set(); // 북마크 데이터 저장할 Set
+
+// * -------- 세션 스토리지에 북마크 추가 -------- //
+const addBookmarksToSession = function () {
+  const btnAddBookmark = document.querySelector(".btnAddBookmark");
+
+  if (btnAddBookmark) {
+    btnAddBookmark.addEventListener("click", function () {
+      bookmarkMoviesId = this.getAttribute("data-id");
+
+      if (bookmarkMoviesId) {
+        bookmarksData.add(bookmarkMoviesId);
+        sessionStorage.setItem("bookmark", JSON.stringify([...bookmarksData]));
+      }
+      alert("북마크 추가가 완료되었습니다.");
+    });
+  }
+};
+
+// * -------- 세션 스토리지에서 북마크된 영화 세팅 -------- //
+const loadBookmarks = function () {
+  const movieCards = document.querySelectorAll(".movieCard");
+  const savedBookmarks = sessionStorage.getItem("bookmark");
+
+  if (savedBookmarks) {
+    bookmarksData = new Set(JSON.parse(savedBookmarks));
+    const bookmarkList = [...bookmarksData]; // 세션 스토리지에 저장된 북마크 데이터에서 id들만 따로 저장
+
+    movieCards.forEach(function (card) {
+      const cardId = card.getAttribute("data-id"); // movieCard의 data-id 값 가져오기
+
+      if (bookmarkList.includes(cardId)) {
+        card.classList.add("bookmarked");
+      }
+    });
+  }
+};
+
+const btnShowBookmark = document.querySelector(".anchorToBookmark");
+
+// * -------- 북마크 된 영화만 노출 -------- //
+btnShowBookmark.addEventListener("click", function () {
+  loadBookmarks();
+
+  const movieCards = document.querySelectorAll(".movieCard");
+  const savedBookmarks = sessionStorage.getItem("bookmark");
+
+  if (!savedBookmarks || JSON.parse(savedBookmarks).length === 0) {
+    // 세션 스토리지에 북마크 데이터가 없을 경우
+    alert("북마크된 영화가 없습니다.");
+    return; // 이후 코드를 실행하지 않음
+  }
+  movieCards.forEach(function (card) {
+    const isBookmarked = card.classList.contains("bookmarked"); // movieCard의 data-id 값 가져오기
+
+    if (isBookmarked) {
+      card.classList.remove("displaynone");
+    } else {
+      card.classList.add("displaynone");
+    }
+  });
 });
