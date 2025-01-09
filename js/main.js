@@ -4,7 +4,7 @@ import { fetchMovies } from "./moviesApi.js";
 const movieCardArea = document.querySelector(".movieCardsArea"); // 영화 카드 뿌려질 영역
 const movieModal = document.getElementById("movieModal"); // 모달
 const searchInput = document.getElementById("searchText"); // 검색창 인풋 박스
-const btnShowBookmark = document.querySelector(".anchorToBookmark"); // 북마크 보기 버튼
+const btnShowBookmark = document.querySelector(".btnToBookmark"); // 북마크 보기 버튼
 
 let movieListUrl =
   "https://api.themoviedb.org/3/movie/popular?language=ko&page=2"; // 기본 영화 리스트 URL
