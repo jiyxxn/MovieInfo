@@ -1,6 +1,9 @@
 # 🎞 MovieInfo
 
-![페이지 전체 이미지](./images/index.JPG)
+![image](https://github.com/user-attachments/assets/93289094-1b1b-4d0a-a481-829a2ff5f0d1)
+![image](https://github.com/user-attachments/assets/73c5252e-d9a6-4ad5-94b4-01a158e9cc5d)
+![image](https://github.com/user-attachments/assets/03c5b61e-fd07-4573-b656-d0f281265969)
+
 
 <br>
 <br>
@@ -25,6 +28,7 @@
 ## 🚀 트러블 슈팅
 
 - ### [[영화 상세 모달] 모달 클릭 이벤트 에러 : 안전한 이벤트 위임 처리](https://velog.io/@jiyunk/트러블슈팅-모달-클릭-이벤트-에러-안전한-이벤트-위임-처리)
+- ### [[영화 북마크] 얘 세션 스토리지야 엄마가 시키지도 않았는데 같은 값을 계속 저장한거니?](https://velog.io/@jiyunk/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%84%B8%EC%85%98-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EC%95%BC-%EC%99%9C-%EA%B0%99%EC%9D%80-%EA%B0%92%EC%9D%84-%EC%9E%90%EA%BE%B8-%EC%A0%80%EC%9E%A5%ED%95%98%EB%8B%88)
 
 <br>
 <br>
@@ -42,6 +46,8 @@
 |   |- main.js
 |   |- bookmarks.js
 |   |- moviesApi.js
+|
+|- images/🖼
 |
 |- index.html
 ```
