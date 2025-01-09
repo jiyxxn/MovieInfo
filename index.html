@@ -11,28 +11,39 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="./css/style.css" />
-    <title>YOONFLIX</title>
+    <title>SEARCHLIX</title>
   </head>
   <body>
-    <!-- modal for details -->
-    <div id="movieModal">
-      <div class="dimmed"></div>
-      <div class="modalContent">
-        <button type="button">닫기</button>
+    <div class="pageWrapper">
+      <!-- modal for details -->
+      <div id="movieModal">
+        <div class="dimmed"></div>
+        <div class="modalContent">
+          <button type="button">닫기</button>
+        </div>
       </div>
+      <aside class="sidebar">
+        <h1>
+          <a href="./index.html"
+            ><img src="./images/logo_searchlix.png" alt="SEARCHLIX"
+          /></a>
+        </h1>
+        <input
+          type="text"
+          name="searchText"
+          id="searchText"
+          placeholder="검색어를 입력하세요"
+        />
+        <button type="button" class="btnToBookmark">북마크 보기</button>
+      </aside>
+      <main>
+        <section class="inner">
+          <ul class="movieCardsArea">
+            <!-- movie cards here -->
+          </ul>
+        </section>
+      </main>
     </div>
-    <header class="header">
-      <h1>영화 검색</h1>
-      <input type="text" name="searchText" id="searchText" />
-      <a href="javascript:void(0)" class="anchorToBookmark">북마크 보기</a>
-    </header>
-    <main>
-      <section class="wrapper">
-        <ul class="movieCardsArea">
-          <!-- movie cards here -->
-        </ul>
-      </section>
-    </main>
     <script type="module" src="./js/main.js"></script>
   </body>
 </html>
