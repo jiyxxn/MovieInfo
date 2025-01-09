@@ -29,6 +29,10 @@ body {
   color: var(--color-black);
 }
 
+.displaynone {
+  display: none;
+}
+
 .header {
   width: 100%;
   background-color: var(--color-black);
