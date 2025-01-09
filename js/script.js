@@ -5,6 +5,9 @@ const modalContent = document.querySelector("#movieModal .modalContent");
 
 let moviesData = []; // 영화 데이터 담을 곳
 
+let movieListUrl =
+  "https://api.themoviedb.org/3/movie/popular?language=ko&page=2"; // 기본 영화 리스트 URL
+
 // * -------- TMDB API : API request and get -------- //
 const fetchMovies = async function () {
   const options = {
@@ -17,11 +20,9 @@ const fetchMovies = async function () {
   };
 
   try {
-    const res = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=ko&page=2",
-      options
-    );
+    const res = await fetch(movieListUrl, options);
     const { results } = await res.json();
+    console.log(results);
     return results;
   } catch (err) {
     console.error("Error fetching movies:", err);
@@ -47,10 +48,6 @@ const displayMovies = function (movies) {
     movieCardArea.innerHTML += cardMarkup;
   });
 };
-
-fetchMovies().then((movies) => {
-  displayMovies(movies);
-});
 
 // * -------- 모달창 내 영화 정보 넣는 함수 -------- //
 const displayMovieDetails = function (movie) {
@@ -96,4 +93,34 @@ movieModal.addEventListener("click", function (e) {
   ) {
     movieModal.classList.remove("active");
   }
+});
+
+const searchMovies = function () {
+  const searchInput = document.getElementById("searchText");
+
+  // 디바운싱
+  let debounceTimeout;
+  searchInput.addEventListener("input", function () {
+    clearTimeout(debounceTimeout); // 이전 타이머 취소
+
+    let searchKeyword = this.value.trim();
+
+    debounceTimeout = setTimeout(async function () {
+      let searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchKeyword}&include_adult=false&language=ko&page=1`;
+
+      searchKeyword.length > 0
+        ? (movieListUrl = searchUrl)
+        : (movieListUrl =
+            "https://api.themoviedb.org/3/movie/popular?language=ko&page=2"); // 검색어 지워지면 원래 리스트로
+
+      const movies = await fetchMovies();
+      movieCardArea.innerHTML = ""; // 기존 영화 카드 초기화
+      displayMovies(movies); // 영화 데이터 다시 렌더링
+    }, 300);
+  });
+};
+
+fetchMovies().then((movies) => {
+  displayMovies(movies);
+  searchMovies(movies);
 });
