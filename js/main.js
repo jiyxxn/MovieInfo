@@ -94,7 +94,7 @@ const renderMovieDetails = function (movie) {
 const searchMovies = function () {
   clearTimeout(debounceTimeout);
 
-  let searchKeyword = searchInput.value.trim();
+  let searchKeyword = searchInput.value.trim().toLowerCase();
 
   debounceTimeout = setTimeout(async function () {
     movieListUrl =
@@ -130,4 +130,11 @@ btnShowBookmark.addEventListener("click", function () {
 });
 searchInput.addEventListener("input", function () {
   searchMovies();
+});
+
+// *
+// * Auto Focus
+// *
+window.addEventListener("load", function () {
+  searchInput.focus();
 });
