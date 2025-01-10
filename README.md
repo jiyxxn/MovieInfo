@@ -26,7 +26,7 @@
 ## 🚀 트러블 슈팅
 
 - ### [[상세 모달] 모달 클릭 이벤트 에러 : 안전한 이벤트 위임 처리](https://velog.io/@jiyunk/트러블슈팅-모달-클릭-이벤트-에러-안전한-이벤트-위임-처리)
-- ### [[북마크] 컴퓨터는 생각보다 멍청하다 - 세션 스토리지 내 같은 값 누적 저장 이슈](https://velog.io/@jiyunk/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%84%B8%EC%85%98-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EC%95%BC-%EC%99%9C-%EA%B0%99%EC%9D%80-%EA%B0%92%EC%9D%84-%EC%9E%90%EA%BE%B8-%EC%A0%80%EC%9E%A5%ED%95%98%EB%8B%88)
+- ### [[북마크] 컴퓨터는 생각보다 멍청하다 - 세션 스토리지 내 같은 값 누적 이슈](https://velog.io/@jiyunk/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%84%B8%EC%85%98-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EC%95%BC-%EC%99%9C-%EA%B0%99%EC%9D%80-%EA%B0%92%EC%9D%84-%EC%9E%90%EA%BE%B8-%EC%A0%80%EC%9E%A5%ED%95%98%EB%8B%88)
 
 <br>
 <br>
