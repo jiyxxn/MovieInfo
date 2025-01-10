@@ -72,6 +72,7 @@ const renderMovieDetails = function (movie) {
     movie.title
   }">
     </div>
+    <div class="bottomWrap">
     <div class="movieInfo">
       <p class="title">${movie.title}</p>
       <p class="description">${movie.overview || "준비중"}</p>
@@ -82,6 +83,7 @@ const renderMovieDetails = function (movie) {
       }">북마크에 추가하기</button>
     </div>
     <button type="button" class="btnClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
   `;
 
   document.querySelector(".modalContent").innerHTML = detailsMarkup; // 모달 콘텐츠 업데이트
