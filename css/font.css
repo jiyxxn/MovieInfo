@@ -1,22 +1,24 @@
 /* Pretendard */
 @font-face {
   font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff")
     format("woff");
-  font-weight: 400;
+  font-weight: 300;
   font-style: normal;
 }
+/* Paperlogy */
 @font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff")
-    format("woff");
-  font-weight: 700;
+  font-family: "Paperlogy";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2")
+    format("woff2");
+  font-weight: 300;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff")
-    format("woff");
-  font-weight: 800;
+  font-family: "Paperlogy";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2")
+    format("woff2");
+  font-weight: 600;
   font-style: normal;
 }
