@@ -1,9 +1,7 @@
 # 🎞 MovieInfo
 
-![image](https://github.com/user-attachments/assets/93289094-1b1b-4d0a-a481-829a2ff5f0d1)
-![image](https://github.com/user-attachments/assets/73c5252e-d9a6-4ad5-94b4-01a158e9cc5d)
-![image](https://github.com/user-attachments/assets/03c5b61e-fd07-4573-b656-d0f281265969)
-
+![image](https://github.com/user-attachments/assets/8db0efcb-f7b9-43b3-a942-ef22177b7d6b)
+![image](https://github.com/user-attachments/assets/b5175e0d-a64d-4486-b59b-e66a86f9f5ab)
 
 <br>
 <br>
