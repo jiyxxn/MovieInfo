@@ -12,7 +12,9 @@
   --font-size: 16px;
 
   /* weight */
+  --font-light: 300;
   --font-regular: 400;
+  --font-semibold: 600;
   --font-bold: 700;
   --font-extraBold: 800;
 }
@@ -20,14 +22,12 @@
 html {
   background: #0a1625 url(../images/wrapper_bg.png) repeat 0 0;
   background-blend-mode: overlay;
-  height: 100%;
 }
 
 body {
   min-width: 1300px;
-  height: 100%;
-  font-family: "Pretendard";
-  font-weight: var(--font-regular);
+  font-family: "Paperlogy";
+  font-weight: var(--font-light);
   color: var(--color-black);
 }
 
@@ -44,7 +44,7 @@ h1 img {
   mix-blend-mode: hard-light;
 }
 
-/* * ================================= 영화 검색 영역 ================================= */
+/* 사이드바 */
 .sidebar {
   position: fixed;
   width: 20%;
@@ -55,31 +55,28 @@ h1 img {
   background-color: var(--color-navy);
   mix-blend-mode: screen;
 }
-.sidebar #searchText {
-  box-sizing: border-box;
-  display: block;
-  width: 85%;
-  height: 40px;
-  margin: 0 auto;
-  padding: 0 0 0 5%;
-  border-radius: 5px;
-  background-color: #1c2125;
-  color: #6b6b6c;
-}
-
+.sidebar #searchText,
 .sidebar .btnToBookmark {
+  box-sizing: border-box;
   display: block;
   width: 85%;
   height: 40px;
   margin: 20px auto 0;
   border-radius: 5px;
-  background-color: #000204;
-  color: var(--color-gray);
   cursor: pointer;
 }
+.sidebar #searchText {
+  margin-top: 0;
+  padding: 0 0 0 5%;
+  background-color: #1c2125;
+  color: #6b6b6c;
+}
+.sidebar .btnToBookmark {
+  background-color: #000204;
+  color: var(--color-gray);
+}
 
-/* * ================================= 영화 카드 영역 =================================*/
-
+/* 영화 카드 */
 .movieCardsArea {
   width: 100%;
   padding: 0;
@@ -91,43 +88,40 @@ h1 img {
 .movieCardsArea .movieCard {
   background-color: var(--color-white);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px #44444450;
-  cursor: pointer;
   box-shadow: 0px 0px 15px 1px #91a3e950;
+  cursor: pointer;
 }
-
+.movieCardsArea .thumbnail {
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+}
+.movieCardsArea .thumbnail img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
 .movieInfo {
   padding: 20px;
   display: flex;
   flex-flow: column nowrap;
   gap: 10px;
 }
-.thumbnail {
-  overflow: hidden;
-  border-radius: 10px 10px 0 0;
-}
-.thumbnail img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-}
 .movieInfo .title {
-  font-weight: var(--font-bold);
+  font-weight: var(--font-semibold);
   font-size: 1.02em;
   letter-spacing: -0.008em;
 }
-
 .movieCardsArea .movieCard .rating {
   display: flex;
   align-items: center;
   gap: 2px;
+  font-size: 0.8rem;
 }
 .movieCardsArea .movieCard .rating::before {
   content: "⭐";
-  display: block;
 }
 
-/* * ================================= 영화 상세 모달 영역 =================================*/
+/* 상세 모달 */
 #movieModal {
   width: 100%;
   height: 100vh;
@@ -138,49 +132,77 @@ h1 img {
 #movieModal.active {
   display: block;
 }
-
 .dimmed {
   position: fixed;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
 }
-
 #movieModal .modalContent {
+  box-sizing: border-box;
   position: fixed;
-  width: 20%;
-  min-width: 350px;
-  height: 600px;
+  width: 45%;
+  min-width: 600px;
+  height: 450px;
+  display: flex;
+  gap: 20px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--color-white);
   z-index: 500;
-  overflow-y: scroll;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  border-radius: 8px;
+  padding: 40px 1% 40px 3%;
+  border-radius: 10px;
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-shadow: 0 0 4px #00000080;
 }
-
+#movieModal .modalContent .bottomWrap {
+  flex: 1;
+}
 #movieModal .modalContent .title {
-  font-size: 1.2rem;
-  font-weight: var(--font-extraBold);
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
 }
-
+#movieModal .modalContent .movieInfo {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 30px 0 0;
+  justify-content: space-between;
+  overflow-y: scroll;
+}
+#movieModal .modalContent .thumbnail img {
+  height: 100%;
+}
+#movieModal .modalContent .movieInfo .description,
+#movieModal .modalContent .movieInfo span {
+  font-family: "Pretendard";
+  font-weight: var(--font-light);
+  line-height: 1.4;
+}
 #movieModal .modalContent .btnAddBookmark {
-  background-color: var(--color-navy);
+  background-image: linear-gradient(0deg, #181c21 0%, #2a3c4f 100%);
   color: var(--color-white);
   padding: 12px 0;
   border-radius: 4px;
   margin-top: 20px;
   cursor: pointer;
 }
-
 #movieModal .modalContent .btnClose {
   position: absolute;
   top: 2%;
-  right: 4%;
+  right: -5%;
   display: flex;
-  color: var(--color-black);
+  color: var(--color-white);
   cursor: pointer;
+  background: none;
+}
+#movieModal .modalContent .btnClose i {
+  font-weight: var(--font-semibold);
+  font-size: 1.5rem;
+  opacity: 0.8;
 }
