@@ -56,7 +56,7 @@ h1 img {
   mix-blend-mode: screen;
 }
 .sidebar #searchText,
-.sidebar .btnToBookmark {
+.sidebar .btnToggleBookmark {
   box-sizing: border-box;
   display: block;
   width: 85%;
@@ -71,7 +71,7 @@ h1 img {
   background-color: #1c2125;
   color: #6b6b6c;
 }
-.sidebar .btnToBookmark {
+.sidebar .btnToggleBookmark {
   background-color: #000204;
   color: var(--color-gray);
 }
