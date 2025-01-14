@@ -9,8 +9,11 @@ export const addBookmarksToSession = function (e) {
     if (bookmarkMoviesId) {
       bookmarksData.add(bookmarkMoviesId);
       sessionStorage.setItem("bookmark", JSON.stringify([...bookmarksData]));
+      alert("북마크 추가가 완료되었습니다.");
+    } else {
+      console.log(" error! : not having bookmarkMoviesId");
+      alert("북마크가 등록되지 않았습니다.");
     }
-    alert("북마크 추가가 완료되었습니다.");
   }
 };
 
