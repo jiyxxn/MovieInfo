@@ -206,3 +206,26 @@ h1 img {
   font-size: 1.5rem;
   opacity: 0.8;
 }
+
+/* 토스트팝업 */
+.toastMessage {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-navy);
+  box-shadow: 0 0 6px 0 var(--color-navy);
+  padding: 1% 4%;
+  border-radius: 50px;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3s;
+  text-shadow: 0 0 4px #00000080;
+  color: var(--color-white);
+}
+
+.toastMessage.active {
+  z-index: 99;
+  opacity: 1;
+  transform: translate(-50%, -100%);
+}
