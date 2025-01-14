@@ -1,4 +1,15 @@
-# 🎞 MovieInfo
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/f4fe452c-3ff5-444e-bf10-3dcc456845bf" width="400">
+</div>
+
+<br>
+<br>
+
+# 🎞 SEARCHLIX : movie-finder 
+> 배포 주소 : [https://movie-info-ebon.vercel.app](https://movie-info-ebon.vercel.app/)
+
+<br>
 
 ![image](https://github.com/user-attachments/assets/8db0efcb-f7b9-43b3-a942-ef22177b7d6b)
 ![image](https://github.com/user-attachments/assets/b5175e0d-a64d-4486-b59b-e66a86f9f5ab)
@@ -8,8 +19,8 @@
 
 ## 💬 프로젝트 소개
 
-> - 📅 개발 기간 : 2025. 01. 07 ~ 2025. 01. 14 (총 7일)
-> <br>
+> 📅 개발 기간 : 2025. 01. 07 ~ 2025. 01. 14 (총 7일)
+> <br><br>
 > 이 프로젝트는 사용자가 다양한 영화를 검색하고, 원하는 영화를 북마크하여 저장할 수 있는 웹 애플리케이션입니다. 
 > <br> TMDB Open API를 활용해 인기 영화를 실시간으로 불러오고, 검색 기능과 북마크 기능을 통해 더 나은 사용자 경험을 제공합니다.
 > <br> 간단한 반응형 디자인을 적용하여 PC 환경에서 최적화되어 있으며, 모바일 환경은 지원하지 않습니다.
@@ -61,3 +72,23 @@
 |
 |- index.html
 ```
+
+<br>
+<br>
+
+## 🧶 기술 스택
+<div align="left">
+
+### Environment
+<img src="https://img.shields.io/badge/Visual_Studio_Code-007ACC?style=for-the-badge&logo=https://upload.wikimedia.org/wikipedia/commons/a/a7/Visual_Studio_Code_1.35_icon.svg&logoColor=white" />
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+
+<br>
+
+### Development
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/themoviedatabase-01B4E4?style=for-the-badge&logo=themoviedatabase&logoColor=white" />
+
+
+</div>
