@@ -1,4 +1,8 @@
-import { addBookmarksToSession, showingBookmarkedMovies } from "./bookmarks.js";
+import {
+  addBookmarksToSession,
+  showingBookmarkedMovies,
+  loadBookmarks,
+} from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
 import { debounceFunc } from "./util/debounce.js";
 
@@ -8,24 +12,25 @@ const DEFAULT_API_URL =
 const movieCardArea = document.querySelector(".movieCardsArea"); // 영화 카드 뿌려질 영역
 const movieModal = document.getElementById("movieModal"); // 모달
 const searchInput = document.getElementById("searchText"); // 검색창 인풋 박스
-const btnShowBookmark = document.querySelector(".btnToBookmark"); // 북마크 보기 버튼
+const btnToggleBookmark = document.querySelector(".btnToggleBookmark"); // 북마크 보기 버튼
 
 let moviesData = []; // 영화 데이터 담을 곳
 
 // *
-// * 영화 API 최초 렌더링
+// * 영화 API 렌더링
 // *
 const getMoviesAndShow = function (url) {
   fetchMovies(url)
     .then((movies) => {
       displayMovies(movies);
+      loadBookmarks(); // 북마크 로딩 최초 실행
     })
     .catch((error) => {
       console.error("Error fetching movies:", error);
     });
 };
 
-getMoviesAndShow(DEFAULT_API_URL);
+getMoviesAndShow(DEFAULT_API_URL); // 영화 API 렌더 최초 실행
 
 // *
 // * Functions()
@@ -118,20 +123,35 @@ const searchMovies = function (searchKeyword) {
   }, 300);
 };
 
+// * toggleBtnState()
+// | - 버튼 속성 변경 btnToggleBookmark.addEventListener("click", function ())에서 실행
+const toggleBtnState = function (e, state, text) {
+  e.target.setAttribute("data-state", state);
+  e.target.innerText = text;
+};
+
 // *
 // * 이벤트 리스너 && 기능별 함수 실행 구좌
 // *
 movieCardArea.addEventListener("click", function (e) {
-  openModal(e);
+  openModal(e); // 카드 리스트 클릭 시 모달창 open
 });
 
 movieModal.addEventListener("click", function (e) {
-  closeModal(e);
-  addBookmarksToSession(e);
+  closeModal(e); // close 버튼 or 딤 영역 클릭 시 모달 close
+  addBookmarksToSession(e); // 모달 내 북마크에 추가하기 버튼 클릭 시 세션 스토리지에 북마크 추가
 });
 
-btnShowBookmark.addEventListener("click", function () {
-  showingBookmarkedMovies();
+btnToggleBookmark.addEventListener("click", function (e) {
+  let btnState = e.target.getAttribute("data-state");
+
+  if (btnState === "showBookmark") {
+    showingBookmarkedMovies();
+    toggleBtnState(e, "showDefalutList", "목록으로 돌아가기");
+  } else if (btnState === "showDefalutList") {
+    getMoviesAndShow(DEFAULT_API_URL);
+    toggleBtnState(e, "showBookmark", "북마크 보기");
+  }
 });
 
 searchInput.addEventListener("input", function () {
