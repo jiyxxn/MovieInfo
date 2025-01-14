@@ -206,3 +206,29 @@ h1 img {
   font-size: 1.5rem;
   opacity: 0.8;
 }
+
+/* 토스트팝업 */
+.toastMessage {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 0 6px 0 rgba(254, 254, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 1% 4%;
+  border-radius: 50px;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3s;
+  /* font-weight: var(--font-semibold); */
+  text-shadow: 0 0 4px #00000080;
+  color: var(--color-white);
+}
+
+.toastMessage.active {
+  z-index: 99;
+  opacity: 1;
+  transform: translate(-50%, -100%);
+}
