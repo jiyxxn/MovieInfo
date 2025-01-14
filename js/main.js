@@ -1,7 +1,7 @@
 import {
   addBookmarksToSession,
   showingBookmarkedMovies,
-  loadBookmarks,
+  applyBookmarks,
 } from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
 import { debounceFunc } from "./util/debounce.js";
@@ -20,18 +20,18 @@ let moviesData = []; // 영화 데이터 담을 곳
 // *
 // * 영화 API 렌더링
 // *
-const getMoviesAndShow = function (url) {
+const loadMoviesWithBookmarks = function (url) {
   fetchMovies(url)
     .then((movies) => {
       displayMovies(movies);
-      loadBookmarks(); // 북마크 로딩 최초 실행
+      applyBookmarks(); // 세션 스토리지에 저장된 영화에 북마크 클래스 적용
     })
     .catch((error) => {
       console.error("Error fetching movies:", error);
     });
 };
 
-getMoviesAndShow(DEFAULT_API_URL); // 영화 API 렌더 최초 실행
+loadMoviesWithBookmarks(DEFAULT_API_URL); // 영화 API 렌더 최초 실행
 
 // *
 // * Functions()
@@ -120,7 +120,7 @@ const searchMovies = function (searchKeyword) {
   debounceFunc(function () {
     let searchApiUrl = `https://api.themoviedb.org/3/search/movie?query=${searchKeyword}&include_adult=false&language=ko&page=1`;
 
-    getMoviesAndShow(searchApiUrl);
+    loadMoviesWithBookmarks(searchApiUrl);
   }, 300);
 };
 
@@ -145,7 +145,7 @@ btnToggleBookmark.addEventListener("click", function (e) {
     showingBookmarkedMovies();
     toggleBtnState(e, "showDefalutList", "목록으로 돌아가기");
   } else if (btnState === "showDefalutList") {
-    getMoviesAndShow(DEFAULT_API_URL);
+    loadMoviesWithBookmarks(DEFAULT_API_URL);
     toggleBtnState(e, "showBookmark", "북마크 보기");
   }
 });
@@ -156,7 +156,7 @@ searchInput.addEventListener("input", function () {
 
   if (searchKeyword === "") {
     debounceFunc(function () {
-      getMoviesAndShow(DEFAULT_API_URL);
+      loadMoviesWithBookmarks(DEFAULT_API_URL);
     }, 300);
   } else {
     searchMovies(searchKeyword);

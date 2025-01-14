@@ -18,12 +18,12 @@ export const addBookmarksToSession = function (e) {
       toastPopup("북마크가 등록되지 않았습니다.");
     }
   }
-  loadBookmarks();
+  applyBookmarks();
 };
 
-// * loadBookmarks()
+// * applyBookmarks()
 // | - 세션 스토리지에 등록된 영화에 .bookmarked 추가
-export const loadBookmarks = function () {
+export const applyBookmarks = function () {
   const movieCards = document.querySelectorAll(".movieCard");
   const savedBookmarks = sessionStorage.getItem("bookmark");
 
