@@ -1,13 +1,13 @@
 import {
-  addBookmarksToSession,
-  showingBookmarkedMovies,
+  addMovieToBookmarkSession,
+  displayBookmarkedMovies,
   applyBookmarks,
 } from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
 import { debounceFunc } from "./util/debounce.js";
-import { toggleBtnState } from "./util/toggleBtnState.js";
+import { toggleBookmarkBtnState } from "./util/toggleBookmarkBtnState.js";
 
-const DEFAULT_API_URL =
+const DEFAULT_MOVIE_API_URL =
   "https://api.themoviedb.org/3/movie/popular?include_adult=false&language=ko&page=2";
 
 const movieCardArea = document.querySelector(".movieCardsArea"); // 영화 카드 뿌려질 영역
@@ -23,7 +23,7 @@ let moviesData = []; // 영화 데이터 담을 곳
 const loadMoviesWithBookmarks = function (url) {
   fetchMovies(url)
     .then((movies) => {
-      displayMovies(movies);
+      renderMovieCards(movies);
       applyBookmarks(); // 세션 스토리지에 저장된 영화에 북마크 클래스 적용
     })
     .catch((error) => {
@@ -31,15 +31,15 @@ const loadMoviesWithBookmarks = function (url) {
     });
 };
 
-loadMoviesWithBookmarks(DEFAULT_API_URL); // 영화 API 렌더 최초 실행
+loadMoviesWithBookmarks(DEFAULT_MOVIE_API_URL); // 영화 API 렌더 최초 실행
 
 // *
 // * Functions()
 // *
 
-// * displayMovies()
+// * renderMovieCards()
 // | - 영화 정보 뿌리기
-const displayMovies = function (movies) {
+const renderMovieCards = function (movies) {
   moviesData = movies; // 전체 영화 데이터를 저장
 
   movieCardArea.innerHTML = ""; // 기존 영화 카드 초기화
@@ -60,9 +60,9 @@ const displayMovies = function (movies) {
   movieCardArea.innerHTML = cardMarkup;
 };
 
-// * openModal()
+// * openMovieModal()
 // | - 모달창 띄우기 movieCardArea.addEventListener("click", function (e))
-const openModal = function (e) {
+const openMovieModal = function (e) {
   const movieCard = e.target.closest("li");
 
   if (movieCard && movieCardArea.contains(movieCard)) {
@@ -70,15 +70,15 @@ const openModal = function (e) {
     const matchedMovie = moviesData.find((movie) => movie.id == movieId);
 
     if (matchedMovie) {
-      renderMovieDetails(matchedMovie);
+      renderMovieModalContent(matchedMovie);
       movieModal.classList.add("active");
     }
   }
 };
 
-// * closeModal()
+// * closeMovieModal()
 // | - 모달창 닫기 movieModal.addEventListener("click", function (e))
-const closeModal = function (e) {
+const closeMovieModal = function (e) {
   if (
     e.target.classList.contains("dimmed") ||
     (e.target.closest("button") &&
@@ -88,9 +88,9 @@ const closeModal = function (e) {
   }
 };
 
-// * renderMovieDetails()
-// | - 모달 창 내 영화 정보 넣기 openModal()에서 실행
-const renderMovieDetails = function (movie) {
+// * renderMovieModalContent()
+// | - 모달 창 내 영화 정보 넣기 openMovieModal()에서 실행
+const renderMovieModalContent = function (movie) {
   const detailsMarkup = `
     <div class="thumbnail">
       <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${
@@ -128,12 +128,12 @@ const searchMovies = function (searchKeyword) {
 // * 이벤트 리스너 && 기능별 함수 실행 구좌
 // *
 movieCardArea.addEventListener("click", function (e) {
-  openModal(e); // 카드 리스트 클릭 시 모달창 open
+  openMovieModal(e); // 카드 리스트 클릭 시 모달창 open
 });
 
 movieModal.addEventListener("click", function (e) {
-  closeModal(e); // close 버튼 or 딤 영역 클릭 시 모달 close
-  addBookmarksToSession(e); // 모달 내 북마크에 추가하기 버튼 클릭 시 세션 스토리지에 북마크 추가
+  closeMovieModal(e); // close 버튼 or 딤 영역 클릭 시 모달 close
+  addMovieToBookmarkSession(e); // 모달 내 북마크에 추가하기 버튼 클릭 시 세션 스토리지에 북마크 추가
 });
 
 btnToggleBookmark.addEventListener("click", function (e) {
@@ -142,11 +142,11 @@ btnToggleBookmark.addEventListener("click", function (e) {
 
   // 버튼 토글 디폴트 로직
   if (btnState === "showBookmark") {
-    showingBookmarkedMovies();
-    toggleBtnState(e, "showDefalutList", "목록으로 돌아가기");
+    toggleBookmarkBtnState("showDefalutList", "목록으로 돌아가기");
+    displayBookmarkedMovies();
   } else if (btnState === "showDefalutList") {
-    loadMoviesWithBookmarks(DEFAULT_API_URL);
-    toggleBtnState(e, "showBookmark", "북마크 보기");
+    toggleBookmarkBtnState("showBookmark", "북마크 보기");
+    loadMoviesWithBookmarks(DEFAULT_MOVIE_API_URL);
   }
 });
 
@@ -156,7 +156,7 @@ searchInput.addEventListener("input", function () {
 
   if (searchKeyword === "") {
     debounceFunc(function () {
-      loadMoviesWithBookmarks(DEFAULT_API_URL);
+      loadMoviesWithBookmarks(DEFAULT_MOVIE_API_URL);
     }, 300);
   } else {
     searchMovies(searchKeyword);
