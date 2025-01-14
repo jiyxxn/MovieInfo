@@ -1,15 +1,31 @@
 import { addBookmarksToSession, showingBookmarkedMovies } from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
+import { debounceFunc } from "./util/debounce.js";
+
+const DEFAULT_API_URL =
+  "https://api.themoviedb.org/3/movie/popular?include_adult=false&language=ko&page=2";
 
 const movieCardArea = document.querySelector(".movieCardsArea"); // 영화 카드 뿌려질 영역
 const movieModal = document.getElementById("movieModal"); // 모달
 const searchInput = document.getElementById("searchText"); // 검색창 인풋 박스
 const btnShowBookmark = document.querySelector(".btnToBookmark"); // 북마크 보기 버튼
 
-let movieListUrl =
-  "https://api.themoviedb.org/3/movie/popular?language=ko&page=2"; // 기본 영화 리스트 URL
 let moviesData = []; // 영화 데이터 담을 곳
-let debounceTimeout; // 디바운스 세팅
+
+// *
+// * 영화 API 최초 렌더링
+// *
+const getMoviesAndShow = function (url) {
+  fetchMovies(url)
+    .then((movies) => {
+      displayMovies(movies);
+    })
+    .catch((error) => {
+      console.error("Error fetching movies:", error);
+    });
+};
+
+getMoviesAndShow(DEFAULT_API_URL);
 
 // *
 // * Functions()
@@ -19,8 +35,11 @@ let debounceTimeout; // 디바운스 세팅
 // | - 영화 정보 뿌리기
 const displayMovies = function (movies) {
   moviesData = movies; // 전체 영화 데이터를 저장
+
+  movieCardArea.innerHTML = ""; // 기존 영화 카드 초기화
+  let cardMarkup = "";
   movies.forEach((movie) => {
-    const cardMarkup = `
+    cardMarkup += `
       <li data-id="${movie.id}" class="movieCard">
         <div class="thumbnail">
           <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
@@ -31,8 +50,8 @@ const displayMovies = function (movies) {
         </div>
       </li>
     `;
-    movieCardArea.innerHTML += cardMarkup;
   });
+  movieCardArea.innerHTML = cardMarkup;
 };
 
 // * openModal()
@@ -91,29 +110,13 @@ const renderMovieDetails = function (movie) {
 
 // * searchMovies()
 // | - 영화 검색 searchInput.addEventListener("input", function ())에서 실행
-const searchMovies = function () {
-  clearTimeout(debounceTimeout);
+const searchMovies = function (searchKeyword) {
+  debounceFunc(function () {
+    let searchApiUrl = `https://api.themoviedb.org/3/search/movie?query=${searchKeyword}&include_adult=false&language=ko&page=1`;
 
-  let searchKeyword = searchInput.value.trim().toLowerCase();
-
-  debounceTimeout = setTimeout(async function () {
-    movieListUrl =
-      searchKeyword.length > 0
-        ? `https://api.themoviedb.org/3/search/movie?query=${searchKeyword}&include_adult=false&language=ko&page=1`
-        : "https://api.themoviedb.org/3/movie/popular?language=ko&page=2";
-
-    const movies = await fetchMovies(movieListUrl);
-    movieCardArea.innerHTML = ""; // 기존 영화 카드 초기화
-    displayMovies(movies); // 영화 데이터 다시 렌더링
+    getMoviesAndShow(searchApiUrl);
   }, 300);
 };
-
-// *
-// * 영화 API 최초 렌더링
-// *
-fetchMovies(movieListUrl).then((movies) => {
-  displayMovies(movies);
-});
 
 // *
 // * 이벤트 리스너 && 기능별 함수 실행 구좌
@@ -121,15 +124,26 @@ fetchMovies(movieListUrl).then((movies) => {
 movieCardArea.addEventListener("click", function (e) {
   openModal(e);
 });
+
 movieModal.addEventListener("click", function (e) {
   closeModal(e);
   addBookmarksToSession(e);
 });
+
 btnShowBookmark.addEventListener("click", function () {
   showingBookmarkedMovies();
 });
+
 searchInput.addEventListener("input", function () {
-  searchMovies();
+  const searchKeyword = searchInput.value.trim().toLowerCase();
+
+  if (searchKeyword.length <= 0 || searchKeyword === "") {
+    debounceFunc(function () {
+      getMoviesAndShow(DEFAULT_API_URL);
+    }, 300);
+  } else {
+    searchMovies(searchKeyword);
+  }
 });
 
 // *
