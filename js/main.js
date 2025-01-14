@@ -5,6 +5,7 @@ import {
 } from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
 import { debounceFunc } from "./util/debounce.js";
+import { toggleBtnState } from "./util/toggleBtnState.js";
 
 const DEFAULT_API_URL =
   "https://api.themoviedb.org/3/movie/popular?include_adult=false&language=ko&page=2";
@@ -123,13 +124,6 @@ const searchMovies = function (searchKeyword) {
   }, 300);
 };
 
-// * toggleBtnState()
-// | - 버튼 속성 변경 btnToggleBookmark.addEventListener("click", function ())에서 실행
-const toggleBtnState = function (e, state, text) {
-  e.target.setAttribute("data-state", state);
-  e.target.innerText = text;
-};
-
 // *
 // * 이벤트 리스너 && 기능별 함수 실행 구좌
 // *
@@ -143,8 +137,10 @@ movieModal.addEventListener("click", function (e) {
 });
 
 btnToggleBookmark.addEventListener("click", function (e) {
+  // Default : '북마크 보기' 버튼 클릭
   let btnState = e.target.getAttribute("data-state");
 
+  // 버튼 토글 디폴트 로직
   if (btnState === "showBookmark") {
     showingBookmarkedMovies();
     toggleBtnState(e, "showDefalutList", "목록으로 돌아가기");
@@ -155,9 +151,10 @@ btnToggleBookmark.addEventListener("click", function (e) {
 });
 
 searchInput.addEventListener("input", function () {
+  // 검색 이벤트
   const searchKeyword = searchInput.value.trim().toLowerCase();
 
-  if (searchKeyword.length <= 0 || searchKeyword === "") {
+  if (searchKeyword === "") {
     debounceFunc(function () {
       getMoviesAndShow(DEFAULT_API_URL);
     }, 300);
