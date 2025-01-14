@@ -1,11 +1,11 @@
 import { toastPopup } from "./util/toastPopup.js";
-import { toggleBtnState } from "./util/toggleBtnState.js";
+import { toggleBookmarkBtnState } from "./util/toggleBookmarkBtnState.js";
 
 let bookmarksData = new Set(); // 북마크 데이터 저장할 Set
 
-// * addBookmarksToSession()
+// * addMovieToBookmarkSession()
 // | - [북마크에 추가하기] 클릭 시 세션 스토리지에 영화 id 추가
-export const addBookmarksToSession = function (e) {
+export const addMovieToBookmarkSession = function (e) {
   if (e.target.classList.contains("btnAddBookmark")) {
     let bookmarkMoviesId = e.target.getAttribute("data-id");
 
@@ -41,16 +41,16 @@ export const applyBookmarks = function () {
   }
 };
 
-// * showingBookmarkedMovies()
+// * displayBookmarkedMovies()
 // | - 북마크 된 영화만 노출
-export const showingBookmarkedMovies = function () {
+export const displayBookmarkedMovies = function () {
   const movieCards = document.querySelectorAll(".movieCard");
   const savedBookmarks = sessionStorage.getItem("bookmark");
 
   if (!savedBookmarks || JSON.parse(savedBookmarks).length === 0) {
     // 세션 스토리지에 북마크 데이터가 없을 경우
     toastPopup("북마크된 영화가 없습니다.");
-    toggleBtnState(e, "showBookmark", "북마크 보기"); // 북마크 보기 버튼으로 현상 유지
+    toggleBookmarkBtnState("showBookmark", "북마크 보기"); // 북마크 보기 버튼으로 현상 유지
     return;
   }
   movieCards.forEach(function (card) {
