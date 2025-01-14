@@ -15,11 +15,12 @@ export const addBookmarksToSession = function (e) {
       alert("북마크가 등록되지 않았습니다.");
     }
   }
+  loadBookmarks();
 };
 
 // * loadBookmarks()
 // | - 세션 스토리지에 등록된 영화에 .bookmarked 추가
-const loadBookmarks = function () {
+export const loadBookmarks = function () {
   const movieCards = document.querySelectorAll(".movieCard");
   const savedBookmarks = sessionStorage.getItem("bookmark");
 
@@ -40,8 +41,6 @@ const loadBookmarks = function () {
 // * showingBookmarkedMovies()
 // | - 북마크 된 영화만 노출
 export const showingBookmarkedMovies = function () {
-  loadBookmarks();
-
   const movieCards = document.querySelectorAll(".movieCard");
   const savedBookmarks = sessionStorage.getItem("bookmark");
 
