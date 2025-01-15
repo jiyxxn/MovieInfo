@@ -1,11 +1,13 @@
 import {
-  addMovieToBookmarkSession,
+  setInitialBookmarkState,
+  toggleBookmark,
   displayBookmarkedMovies,
-  applyBookmarks,
+  showNoBookmarksAlert,
+  updateBookmarkClasses,
 } from "./bookmarks.js";
 import { fetchMovies } from "./moviesApi.js";
 import { debounceFunc } from "./util/debounce.js";
-import { toggleBookmarkBtnState } from "./util/toggleBookmarkBtnState.js";
+import { toggleBtnState } from "./util/toggleBtnState.js";
 
 const DEFAULT_MOVIE_API_URL =
   "https://api.themoviedb.org/3/movie/popular?include_adult=false&language=ko&page=2";
@@ -13,7 +15,7 @@ const DEFAULT_MOVIE_API_URL =
 const movieCardArea = document.querySelector(".movieCardsArea"); // 영화 카드 뿌려질 영역
 const movieModal = document.getElementById("movieModal"); // 모달
 const searchInput = document.getElementById("searchText"); // 검색창 인풋 박스
-const btnToggleBookmark = document.querySelector(".btnToggleBookmark"); // 북마크 보기 버튼
+const btnToggleBookmark = document.querySelector(".btnToggleBookmark"); // 북마크 보기 or 목록으로 돌아가기 버튼
 
 let moviesData = []; // 영화 데이터 담을 곳
 
@@ -24,7 +26,7 @@ const loadMoviesWithBookmarks = function (url) {
   fetchMovies(url)
     .then((movies) => {
       renderMovieCards(movies);
-      applyBookmarks(); // 세션 스토리지에 저장된 영화에 북마크 클래스 적용
+      updateBookmarkClasses(); // 세션 스토리지에 저장된 영화에 북마크 클래스 적용
     })
     .catch((error) => {
       console.error("Error fetching movies:", error);
@@ -103,7 +105,7 @@ const renderMovieModalContent = function (movie) {
       <p class="description">${movie.overview || "준비중"}</p>
       <span class="releaseDate">개봉 일자 : ${movie.release_date}</span>
       <span class="rating">평점 : ${movie.vote_average}</span>
-      <button type="button" class="btnAddBookmark" data-id="${
+      <button type="button" class="btnHandleBookmark" data-id="${
         movie.id
       }">북마크에 추가하기</button>
     </div>
@@ -112,6 +114,10 @@ const renderMovieModalContent = function (movie) {
   `;
 
   document.querySelector(".modalContent").innerHTML = detailsMarkup; // 모달 콘텐츠 업데이트
+
+  let btnHandleBookmark = document.querySelector(".btnHandleBookmark");
+
+  setInitialBookmarkState(btnHandleBookmark, movie.id); // 북마크 상태에 따른 버튼 state 초기화
 };
 
 // * searchMovies()
@@ -133,19 +139,21 @@ movieCardArea.addEventListener("click", function (e) {
 
 movieModal.addEventListener("click", function (e) {
   closeMovieModal(e); // close 버튼 or 딤 영역 클릭 시 모달 close
-  addMovieToBookmarkSession(e); // 모달 내 북마크에 추가하기 버튼 클릭 시 세션 스토리지에 북마크 추가
+  toggleBookmark(e); // 모달 내 북마크에 추가/삭제하기 버튼 클릭 시 로컬 스토리지에 북마크 추가 or 삭제
 });
 
 btnToggleBookmark.addEventListener("click", function (e) {
-  // Default : '북마크 보기' 버튼 클릭
   let btnState = e.target.getAttribute("data-state");
 
-  // 버튼 토글 디폴트 로직
   if (btnState === "showBookmark") {
-    toggleBookmarkBtnState("showDefalutList", "목록으로 돌아가기");
-    displayBookmarkedMovies();
-  } else if (btnState === "showDefalutList") {
-    toggleBookmarkBtnState("showBookmark", "북마크 보기");
+    const hasBookmarks = displayBookmarkedMovies();
+    if (!hasBookmarks) {
+      showNoBookmarksAlert(e.target); // 북마크가 없을 때 처리
+      return;
+    }
+    toggleBtnState(e.target, "showDefaultList", "목록으로 돌아가기");
+  } else if (btnState === "showDefaultList") {
+    toggleBtnState(e.target, "showBookmark", "북마크 보기");
     loadMoviesWithBookmarks(DEFAULT_MOVIE_API_URL);
   }
 });
