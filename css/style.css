@@ -184,7 +184,7 @@ h1 img {
   font-weight: var(--font-light);
   line-height: 1.4;
 }
-#movieModal .modalContent .btnAddBookmark {
+#movieModal .modalContent .btnHandleBookmark {
   background-image: linear-gradient(0deg, #181c21 0%, #2a3c4f 100%);
   color: var(--color-white);
   padding: 12px 0;
