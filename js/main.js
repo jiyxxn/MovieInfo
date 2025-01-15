@@ -1,11 +1,14 @@
 import {
-  setInitialBookmarkState,
   toggleBookmark,
   displayBookmarkedMovies,
   showNoBookmarksAlert,
   updateBookmarkClasses,
 } from "./bookmarks.js";
-import { fetchMovies } from "./moviesApi.js";
+import { fetchMovies } from "./api/moviesApi.js";
+import {
+  renderMovieCards,
+  renderMovieModalContent,
+} from "./component/renderMovies.js";
 import { debounceFunc } from "./util/debounce.js";
 import { toggleBtnState } from "./util/toggleBtnState.js";
 
@@ -25,6 +28,7 @@ let moviesData = []; // 영화 데이터 담을 곳
 const loadMoviesWithBookmarks = function (url) {
   fetchMovies(url)
     .then((movies) => {
+      moviesData = movies; // 전체 영화 데이터를 저장
       renderMovieCards(movies);
       updateBookmarkClasses(); // 세션 스토리지에 저장된 영화에 북마크 클래스 적용
     })
@@ -38,29 +42,6 @@ loadMoviesWithBookmarks(DEFAULT_MOVIE_API_URL); // 영화 API 렌더 최초 실�
 // *
 // * Functions()
 // *
-
-// * renderMovieCards()
-// | - 영화 정보 뿌리기
-const renderMovieCards = function (movies) {
-  moviesData = movies; // 전체 영화 데이터를 저장
-
-  movieCardArea.innerHTML = ""; // 기존 영화 카드 초기화
-  let cardMarkup = "";
-  movies.forEach((movie) => {
-    cardMarkup += `
-      <li data-id="${movie.id}" class="movieCard">
-        <div class="thumbnail">
-          <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-        </div>
-        <div class="movieInfo">
-          <p class="title">${movie.title}</p>
-          <span class="rating">${movie.vote_average}</span>
-        </div>
-      </li>
-    `;
-  });
-  movieCardArea.innerHTML = cardMarkup;
-};
 
 // * openMovieModal()
 // | - 모달창 띄우기 movieCardArea.addEventListener("click", function (e))
@@ -88,36 +69,6 @@ const closeMovieModal = function (e) {
   ) {
     movieModal.classList.remove("active");
   }
-};
-
-// * renderMovieModalContent()
-// | - 모달 창 내 영화 정보 넣기 openMovieModal()에서 실행
-const renderMovieModalContent = function (movie) {
-  const detailsMarkup = `
-    <div class="thumbnail">
-      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${
-    movie.title
-  }">
-    </div>
-    <div class="bottomWrap">
-    <div class="movieInfo">
-      <p class="title">${movie.title}</p>
-      <p class="description">${movie.overview || "준비중"}</p>
-      <span class="releaseDate">개봉 일자 : ${movie.release_date}</span>
-      <span class="rating">평점 : ${movie.vote_average}</span>
-      <button type="button" class="btnHandleBookmark" data-id="${
-        movie.id
-      }">북마크에 추가하기</button>
-    </div>
-    <button type="button" class="btnClose"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-  `;
-
-  document.querySelector(".modalContent").innerHTML = detailsMarkup; // 모달 콘텐츠 업데이트
-
-  let btnHandleBookmark = document.querySelector(".btnHandleBookmark");
-
-  setInitialBookmarkState(btnHandleBookmark, movie.id); // 북마크 상태에 따른 버튼 state 초기화
 };
 
 // * searchMovies()
