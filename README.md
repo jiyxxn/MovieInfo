@@ -60,13 +60,14 @@
 |   |- style.css  
 |
 |- js/
+|   |- api/ moviesApi.js
+|   |- component/ renderMovies.js
 |   |- util/
 |   |   |- debounceFunc.js
 |   |   |- toastPopup.js
 |   |   |- toggleBookmarkBtnState.js
-|   |- main.js
 |   |- bookmarks.js
-|   |- moviesApi.js
+|   |- main.js
 |
 |- images/🖼
 |
