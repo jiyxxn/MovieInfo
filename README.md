@@ -65,7 +65,7 @@
 |   |- util/
 |   |   |- debounceFunc.js
 |   |   |- toastPopup.js
-|   |   |- toggleBookmarkBtnState.js
+|   |   |- toggleBtnState.js
 |   |- bookmarks.js
 |   |- main.js
 |
