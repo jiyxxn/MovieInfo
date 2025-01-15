@@ -83,7 +83,7 @@ export const displayBookmarkedMovies = function () {
   const savedBookmarks = localStorage.getItem("bookmark");
 
   if (!savedBookmarks || JSON.parse(savedBookmarks).length === 0) {
-    return false; // 북마크된 영화가 없음을 알림
+    return false; // 북마크된 영화가 없음
   }
 
   movieCards.forEach(function (card) {
